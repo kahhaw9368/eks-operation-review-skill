@@ -1,3 +1,5 @@
 .DS_Store
 reports/**/*.html
 reports/**/.DS_Store
+EKS-Operation-Review-*.md
+EKS-Operation-Review-*.html
