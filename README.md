@@ -6,33 +6,11 @@ A Claude Code skill that performs automated EKS operational excellence assessmen
 
 ## Sample Output
 
-The skill generates a report with a maturity score, detailed findings per section, and prioritized actions:
+The skill generates an HTML report with an executive summary, maturity score, detailed findings, and prioritized actions. A typical assessment takes **5-10 minutes** per cluster.
 
-```
-## Maturity Score
-| Rating | Count | Percentage |
-|--------|-------|------------|
-| GREEN  | 6     | 18.8%      |
-| AMBER  | 13    | 40.6%      |
-| RED    | 13    | 40.6%      |
+![Executive Summary and Maturity Score](docs/sample-report-summary.png)
 
-## Findings
-### Section 04 -- Observability
-| Item                    | Status | Current State                          | Recommendation                        |
-|-------------------------|--------|----------------------------------------|---------------------------------------|
-| 4.1 Control Plane Logging | RED  | All 5 log types disabled               | Enable all log types. Priority: audit |
-| 4.2 Metrics Collection    | RED  | No Container Insights or Prometheus    | Deploy Container Insights or Prom+Grafana |
-...
-
-## Prioritized Actions
-### Critical (Address within 30 days)
-| # | Finding                              | Action                                    |
-|---|--------------------------------------|-------------------------------------------|
-| 1 | 3.3 -- API Server Endpoint RED       | Enable private endpoint. Restrict CIDRs.  |
-| 2 | 4.1 -- Control Plane Logging RED     | Enable all 5 log types immediately.       |
-```
-
-The HTML version provides a styled, shareable report. A typical assessment takes **5-10 minutes** per cluster.
+![Detailed Findings by Section](docs/sample-report-findings.png)
 
 ## What Problem Does It Solve
 
