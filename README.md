@@ -152,7 +152,7 @@ Your IAM identity also needs read access to Kubernetes resources (Nodes, Pods, D
 ## Getting Started
 
 ```bash
-git clone https://github.com/kahhaw/eks-operation-review-skill.git
+git clone https://github.com/kahhaw9368/eks-operation-review-skill.git
 cd eks-operation-review-skill
 ```
 
