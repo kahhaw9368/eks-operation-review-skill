@@ -218,9 +218,6 @@ Date: [YYYY-MM-DD HH:MM]
 
 ### AWS References
 
-Use the AWS Documentation MCP server to look up verified URLs. Prefer:
-- `docs.aws.amazon.com/eks/latest/best-practices/`
-- `docs.aws.amazon.com/eks/latest/userguide/`
-- `aws.amazon.com/blogs/containers/`
+Use the pre-verified reference map in `steering/report-generation.md` Step 7. Do NOT call the AWS Documentation MCP server during report generation — it adds latency and token cost. All URLs are pre-verified and mapped by section.
 
-Do NOT fabricate URLs. If the MCP server is unavailable, use well-known page URLs only.
+Do NOT fabricate URLs beyond the reference map. If a finding doesn't match a specific URL, use the fallback section-level page.

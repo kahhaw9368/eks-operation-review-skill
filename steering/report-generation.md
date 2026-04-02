@@ -50,17 +50,66 @@ Every entry must include the finding ID and name (e.g., "4.1 — Control Plane L
 
 All UNKNOWN items with specific questions the user should answer.
 
-### Step 7: Look Up AWS References
+### Step 7: Apply AWS Reference Links
 
-Try using the AWS Documentation MCP server to find verified URLs for each recommendation.
+Use the pre-verified reference map below. Do NOT call the AWS Documentation MCP server — it adds latency and token cost with minimal benefit.
 
-If the AWS Documentation MCP server is not available or fails, fall back to these well-known URLs — do NOT skip references entirely:
+**Section 01 — Cluster Lifecycle & Upgrades**
+- Version calendar: `https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html`
+- Upgrade cluster: `https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html`
+- Best practices for upgrades: `https://docs.aws.amazon.com/eks/latest/best-practices/cluster-upgrades.html`
+- Platform versions: `https://docs.aws.amazon.com/eks/latest/userguide/platform-versions.html`
+- Managed node groups: `https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html`
+- EKS Auto Mode: `https://docs.aws.amazon.com/eks/latest/userguide/automode.html`
+
+**Section 02 — Infrastructure as Code & GitOps**
+- EKS User Guide (general): `https://docs.aws.amazon.com/eks/latest/userguide/`
+- Best practices (general): `https://docs.aws.amazon.com/eks/latest/best-practices/`
+
+**Section 03 — Access & Identity**
+- IRSA: `https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html`
+- EKS Pod Identity: `https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html`
+- Access entries: `https://docs.aws.amazon.com/eks/latest/userguide/access-entries.html`
+- Grant K8s access: `https://docs.aws.amazon.com/eks/latest/userguide/grant-k8s-access.html`
+- RBAC hardening: `https://docs.aws.amazon.com/eks/latest/userguide/rbac-hardening.html`
+- API server endpoint: `https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html`
+- Security best practices: `https://docs.aws.amazon.com/eks/latest/best-practices/security.html`
+
+**Section 04 — Observability**
+- Control plane logging: `https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html`
+- Observability overview: `https://docs.aws.amazon.com/eks/latest/userguide/eks-observe.html`
+
+**Section 05 — Workload Configuration**
+- EBS CSI driver: `https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html`
+- Reliability best practices: `https://docs.aws.amazon.com/eks/latest/best-practices/reliability.html`
+
+**Section 06 — Networking**
+- VPC CNI: `https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html`
+- Prefix delegation: `https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html`
+- Custom networking: `https://docs.aws.amazon.com/eks/latest/userguide/cni-custom-network.html`
+- CoreDNS: `https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html`
+- Networking best practices: `https://docs.aws.amazon.com/eks/latest/best-practices/networking.html`
+
+**Section 07 — Autoscaling**
+- Karpenter best practices: `https://docs.aws.amazon.com/eks/latest/best-practices/karpenter.html`
+- Scalability best practices: `https://docs.aws.amazon.com/eks/latest/best-practices/scalability.html`
+- Cost optimization: `https://docs.aws.amazon.com/eks/latest/best-practices/cost-opt.html`
+
+**Section 08 — Deployment Practices**
+- Reliability best practices: `https://docs.aws.amazon.com/eks/latest/best-practices/reliability.html`
+
+**Section 09 — Operational Processes**
+- Reliability best practices: `https://docs.aws.amazon.com/eks/latest/best-practices/reliability.html`
+
+**Section 10 — Add-on Management**
+- Managed add-ons: `https://docs.aws.amazon.com/eks/latest/userguide/managing-add-ons.html`
+- Node health & auto-repair: `https://docs.aws.amazon.com/eks/latest/userguide/node-health.html`
+
+**Fallback (any topic):**
 - EKS Best Practices Guide: `https://docs.aws.amazon.com/eks/latest/best-practices/`
 - EKS User Guide: `https://docs.aws.amazon.com/eks/latest/userguide/`
-- EKS Version Calendar: `https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html`
-- AWS Containers Blog: `https://aws.amazon.com/blogs/containers/`
 
-Do NOT fabricate deep-link URLs. When in doubt, link to the broad section page.
+Do NOT fabricate URLs beyond this list. If a finding doesn't match a specific URL above, use the fallback section-level page.
 
 ### Step 8: Final Consistency Validation
 
