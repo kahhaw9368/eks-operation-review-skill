@@ -1,6 +1,6 @@
 # EKS Operation Review Skill
 
-A Claude Code skill that performs automated EKS operational excellence assessments. It connects to your live EKS cluster, checks 37 items across 10 best-practice areas, and produces a rated report with prioritized recommendations.
+A Claude Code skill that performs automated EKS operational excellence assessments. It connects to your live EKS cluster, checks 37 items across 10 operational areas — informed by the [EKS Best Practices Guide](https://docs.aws.amazon.com/eks/latest/best-practices/) and [EKS User Guide](https://docs.aws.amazon.com/eks/latest/userguide/) — and produces a rated report with prioritized recommendations.
 
 **Read-only** -- this skill does not modify your cluster. All operations are describe/list/get calls only.
 
@@ -14,7 +14,7 @@ The skill generates an HTML report with an executive summary, maturity score, de
 
 ## What Problem Does It Solve
 
-Reviewing an EKS cluster for operational best practices is time-consuming and easy to miss things. This skill automates ~70-75% of those checks by querying your cluster directly, rating each item as GREEN/AMBER/RED, and generating a report with specific, actionable recommendations linked to AWS documentation.
+Reviewing an EKS cluster for operational readiness is time-consuming and easy to miss things. This skill automates ~70-75% of those checks — drawing on guidance from the [EKS Best Practices Guide](https://docs.aws.amazon.com/eks/latest/best-practices/) and [EKS User Guide](https://docs.aws.amazon.com/eks/latest/userguide/) — by querying your cluster directly, rating each item as GREEN/AMBER/RED, and generating a report with specific, actionable recommendations linked to AWS documentation.
 
 ## What Gets Assessed
 
