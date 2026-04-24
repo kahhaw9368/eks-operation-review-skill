@@ -88,44 +88,14 @@ Each report includes an executive summary, maturity score, per-section findings 
 
 ## MCP Server Setup
 
-This skill uses two MCP servers, configured in `.mcp.json` at the project root.
+This skill uses two MCP servers, configured in `.mcp.json` at the project root. The skill works with either EKS MCP server option below — choose the one that fits your environment.
 
 ### EKS MCP Server
 
-<details>
-<summary><strong>Option A: AWS-Managed EKS MCP Server (Recommended)</strong></summary>
-
-The [AWS-managed EKS MCP server](https://docs.aws.amazon.com/eks/latest/userguide/eks-mcp-introduction.html) is a hosted service with automatic updates, CloudTrail audit logging, and a built-in troubleshooting knowledge base.
-
-1. Attach the `AmazonEKSMCPReadOnlyAccess` managed policy to your IAM user/role.
-2. Update `.mcp.json` (replace `{region}` with your AWS region):
-
-```json
-{
-  "mcpServers": {
-    "eks-mcp": {
-      "command": "uvx",
-      "args": [
-        "mcp-proxy-for-aws@latest",
-        "https://eks-mcp.{region}.api.aws/mcp",
-        "--service", "eks-mcp",
-        "--profile", "default",
-        "--region", "{region}",
-        "--read-only"
-      ]
-    }
-  }
-}
-```
-
-See the [Getting Started guide](https://docs.aws.amazon.com/eks/latest/userguide/eks-mcp-getting-started.html) for full setup instructions.
-
-</details>
-
 <details open>
-<summary><strong>Option B: Open-Source EKS MCP Server (Default)</strong></summary>
+<summary><strong>Option A: Open-Source EKS MCP Server (Default)</strong></summary>
 
-The project ships with [awslabs.eks-mcp-server](https://github.com/awslabs/mcp) as the default. Works out of the box with no additional IAM setup.
+The project ships with [awslabs.eks-mcp-server](https://github.com/awslabs/mcp) pre-configured. Works out of the box — no additional IAM setup beyond the [required permissions](#required-permissions).
 
 ```json
 {
@@ -141,9 +111,41 @@ The project ships with [awslabs.eks-mcp-server](https://github.com/awslabs/mcp) 
 
 </details>
 
+<details>
+<summary><strong>Option B: AWS-Managed EKS MCP Server</strong></summary>
+
+Best for teams needing CloudTrail audit logging, automatic updates, and the built-in troubleshooting knowledge base. Requires additional IAM setup.
+
+The [AWS-managed EKS MCP server](https://docs.aws.amazon.com/eks/latest/userguide/eks-mcp-introduction.html) is a hosted service — see the [Getting Started guide](https://docs.aws.amazon.com/eks/latest/userguide/eks-mcp-getting-started.html) for full setup instructions.
+
+1. Attach the `AmazonEKSMCPReadOnlyAccess` managed policy to your IAM user/role.
+2. Replace the EKS server block in `.mcp.json` (replace `{region}` with your AWS region):
+
+```json
+{
+  "mcpServers": {
+    "awslabs.eks-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "mcp-proxy-for-aws@latest",
+        "https://eks-mcp.{region}.api.aws/mcp",
+        "--service", "eks-mcp",
+        "--profile", "default",
+        "--region", "{region}",
+        "--read-only"
+      ]
+    }
+  }
+}
+```
+
+> **Important:** Keep the server key as `awslabs.eks-mcp-server` so the skill's tool references resolve correctly.
+
+</details>
+
 ### AWS Documentation MCP Server
 
-Used during assessment to look up documentation. Already configured in `.mcp.json`:
+Used during assessment for ad-hoc AWS documentation lookups. Already configured in `.mcp.json`:
 
 ```json
 {
@@ -156,6 +158,13 @@ Used during assessment to look up documentation. Already configured in `.mcp.jso
   }
 }
 ```
+
+### Already have MCP servers configured globally?
+
+Claude Code merges MCP configuration from multiple levels (global `~/.claude/settings.json` and project `.mcp.json`). If you already have an EKS MCP server configured globally:
+
+- **Same key name** (`awslabs.eks-mcp-server`) — the project `.mcp.json` takes precedence. No action needed.
+- **Different key name** — you may end up with two EKS MCP servers running. Remove or disable the duplicate from either your global config or the project `.mcp.json` to avoid conflicts.
 
 ### Customization
 
