@@ -93,94 +93,60 @@ Each report includes an executive summary, maturity score, per-section findings 
 
 ## MCP Server Setup
 
-This skill uses two MCP servers, configured in `.mcp.json` at the project root. The skill works with either EKS MCP server option below — choose the one that fits your environment.
+This skill uses two MCP servers, both pre-configured in `.mcp.json`. No setup is needed for the default configuration — just clone and run.
 
-### EKS MCP Server
+<details>
+<summary><strong>Switching to the AWS-Managed EKS MCP Server</strong></summary>
 
-<details open>
-<summary><strong>Option A: Open-Source EKS MCP Server (Default)</strong></summary>
+The default uses the [open-source EKS MCP server](https://github.com/awslabs/mcp). If your team needs CloudTrail audit logging, automatic updates, or the built-in troubleshooting knowledge base, you can switch to the [AWS-managed EKS MCP server](https://docs.aws.amazon.com/eks/latest/userguide/eks-mcp-introduction.html) instead.
 
-The project ships with [awslabs.eks-mcp-server](https://github.com/awslabs/mcp) pre-configured. Works out of the box — no additional IAM setup beyond the [required permissions](#required-permissions).
+1. Attach the `AmazonEKSMCPReadOnlyAccess` managed policy to your IAM user/role.
+2. Replace the `awslabs.eks-mcp-server` block in `.mcp.json` (replace `{region}` with your AWS region):
 
 ```json
-{
-  "mcpServers": {
-    "awslabs.eks-mcp-server": {
-      "command": "uvx",
-      "args": ["awslabs.eks-mcp-server@latest"],
-      "env": { "FASTMCP_LOG_LEVEL": "ERROR" }
-    }
-  }
+"awslabs.eks-mcp-server": {
+  "command": "uvx",
+  "args": [
+    "mcp-proxy-for-aws@latest",
+    "https://eks-mcp.{region}.api.aws/mcp",
+    "--service", "eks-mcp",
+    "--profile", "default",
+    "--region", "{region}",
+    "--read-only"
+  ]
+}
+```
+
+> **Important:** The server name (`"awslabs.eks-mcp-server"`) must stay exactly as shown. Claude Code uses this name to route tool calls — changing it will prevent the skill from working.
+
+See the [Getting Started guide](https://docs.aws.amazon.com/eks/latest/userguide/eks-mcp-getting-started.html) for full setup instructions.
+
+</details>
+
+<details>
+<summary><strong>Using a specific AWS profile or region</strong></summary>
+
+Update the `env` block for the EKS MCP server in `.mcp.json`:
+
+```json
+"env": {
+  "AWS_PROFILE": "your-profile",
+  "AWS_REGION": "us-west-2",
+  "FASTMCP_LOG_LEVEL": "ERROR"
 }
 ```
 
 </details>
 
 <details>
-<summary><strong>Option B: AWS-Managed EKS MCP Server</strong></summary>
+<summary><strong>Already have MCP servers configured globally?</strong></summary>
 
-Best for teams needing CloudTrail audit logging, automatic updates, and the built-in troubleshooting knowledge base. Requires additional IAM setup.
+Claude Code merges MCP config from global (`~/.claude/settings.json`) and project (`.mcp.json`) levels. If you already have an EKS MCP server configured globally:
 
-The [AWS-managed EKS MCP server](https://docs.aws.amazon.com/eks/latest/userguide/eks-mcp-introduction.html) is a hosted service — see the [Getting Started guide](https://docs.aws.amazon.com/eks/latest/userguide/eks-mcp-getting-started.html) for full setup instructions.
-
-1. Attach the `AmazonEKSMCPReadOnlyAccess` managed policy to your IAM user/role.
-2. Replace the EKS server block in `.mcp.json` (replace `{region}` with your AWS region):
-
-```json
-{
-  "mcpServers": {
-    "awslabs.eks-mcp-server": {
-      "command": "uvx",
-      "args": [
-        "mcp-proxy-for-aws@latest",
-        "https://eks-mcp.{region}.api.aws/mcp",
-        "--service", "eks-mcp",
-        "--profile", "default",
-        "--region", "{region}",
-        "--read-only"
-      ]
-    }
-  }
-}
-```
-
-> **Important:** The server name in `.mcp.json` (the `"awslabs.eks-mcp-server"` part) must stay exactly as shown. Claude Code uses this name to route tool calls — changing it will prevent the skill from finding the EKS MCP server.
+- **Same server name** (`awslabs.eks-mcp-server` in both) — the project config takes precedence. No action needed.
+- **Different server name** (e.g., `eks-mcp` globally) — both servers will run. Disable the duplicate to avoid conflicts.
 
 </details>
-
-### AWS Documentation MCP Server
-
-Used during assessment for ad-hoc AWS documentation lookups. Already configured in `.mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "awslabs.aws-documentation-mcp-server": {
-      "command": "uvx",
-      "args": ["awslabs.aws-documentation-mcp-server@latest"],
-      "env": { "FASTMCP_LOG_LEVEL": "ERROR" }
-    }
-  }
-}
-```
-
-### Already have MCP servers configured globally?
-
-Claude Code merges MCP configuration from multiple levels (global `~/.claude/settings.json` and project `.mcp.json`). If you already have an EKS MCP server configured globally:
-
-- **Same server name** (`awslabs.eks-mcp-server` in both places) — the project `.mcp.json` takes precedence. No action needed.
-- **Different server name** (e.g., `eks-mcp` globally vs `awslabs.eks-mcp-server` in the project) — both servers will run simultaneously. Disable the one you don't need to avoid duplicate API calls.
-
-### Customization
-
-To use a specific AWS profile or region, update the `env` block in `.mcp.json`:
-
-```json
-"env": {
-  "AWS_PROFILE": "your-profile",
-  "AWS_REGION": "us-west-2"
-}
-```
 
 ## Required Permissions
 
