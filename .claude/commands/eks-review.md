@@ -41,7 +41,7 @@ This skill assesses your live EKS cluster against 10 areas of operational best p
 |---|---------|------------|
 | 01 | Cluster Lifecycle & Upgrades | Version currency, data plane alignment, deprecated APIs, add-on compatibility, upgrade process |
 | 02 | Infrastructure as Code & GitOps | IaC provenance, GitOps tools, drift detection, RBAC in code |
-| 03 | Access & Identity | IRSA/Pod Identity, least privilege RBAC, API server endpoint security |
+| 03 | Access & Identity | IRSA/Pod Identity, least privilege RBAC, API server endpoint security, Pod Security Admission |
 | 04 | Observability | Control plane logging, metrics stack, log aggregation, alerting |
 | 05 | Workload Configuration | Resource requests/limits, health probes, PDBs, image tags, storage |
 | 06 | Networking | IP capacity, CoreDNS health, network policies |

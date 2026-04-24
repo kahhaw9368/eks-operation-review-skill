@@ -24,8 +24,8 @@ Assess cluster-level autoscaling (nodes) and workload-level autoscaling (pods), 
 6. List pods with field selector `status.phase=Pending`
 
 **Rating:**
-- 🟢 GREEN: Karpenter or Auto Mode with consolidation, or CA with adequate config
-- 🟡 AMBER: CA present but no consolidation/scale-down configured
+- 🟢 GREEN: Karpenter or EKS Auto Mode with consolidation enabled (AWS-preferred path)
+- 🟡 AMBER: Cluster Autoscaler present (legacy — consider migration to Karpenter), or Karpenter without consolidation
 - 🔴 RED: No cluster autoscaling — manual node management
 - ⬜ UNKNOWN: Cannot determine scale-up latency without testing
 
@@ -43,7 +43,7 @@ Assess cluster-level autoscaling (nodes) and workload-level autoscaling (pods), 
 **How to check:**
 1. List HPAs across all namespaces → check minReplicas, maxReplicas, current metrics
 2. List Deployments with replicas > 1 → cross-reference with HPA targets
-3. List HPAs where minReplicas == 1
+3. List HPAs where minReplicas == 1 (single point of failure for production workloads; acceptable for dev/staging)
 4. List ScaledObjects (KEDA CRD, if exists)
 5. List VPA resources (if CRD exists)
 

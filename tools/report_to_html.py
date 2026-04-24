@@ -115,13 +115,16 @@ def convert(md_text):
         # Fenced code block
         if stripped.startswith('```'):
             close_list()
+            lang_match = re.match(r'^```(\w+)?', stripped)
+            lang = lang_match.group(1) if lang_match and lang_match.group(1) else None
+            lang_attr = f' class="language-{lang}"' if lang else ''
             i += 1
             code_lines = []
             while i < len(lines) and not lines[i].strip().startswith('```'):
                 code_lines.append(escape(lines[i]))
                 i += 1
             i += 1  # skip closing ```
-            out.append(f'<pre><code>{chr(10).join(code_lines)}</code></pre>')
+            out.append(f'<pre><code{lang_attr}>{chr(10).join(code_lines)}</code></pre>')
             continue
 
         # Blank line

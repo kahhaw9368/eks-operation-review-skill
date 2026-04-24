@@ -56,7 +56,7 @@ The skill discovers your EKS clusters, asks you to pick one, and walks you throu
 |---|------|----------|
 | 01 | Cluster Lifecycle | Version currency, upgrade readiness, deprecated APIs |
 | 02 | Infrastructure as Code | IaC provenance, GitOps tools, drift detection |
-| 03 | Access & Identity | IRSA / Pod Identity, RBAC, API server endpoint |
+| 03 | Access & Identity | IRSA / Pod Identity, RBAC, API server endpoint, Pod Security Admission |
 | 04 | Observability | Control plane logging, metrics, log aggregation, alerting |
 | 05 | Workload Configuration | Resource requests, health probes, PDBs, image tags |
 | 06 | Networking | IP capacity, CoreDNS, network policies |
@@ -178,10 +178,11 @@ Minimum IAM permissions:
 eks:ListClusters, eks:DescribeCluster, eks:ListNodegroups,
 eks:DescribeNodegroup, eks:ListAddons, eks:DescribeAddon,
 eks:ListInsights, eks:DescribeInsight, eks:ListAccessEntries,
-eks:ListPodIdentityAssociations
+eks:ListPodIdentityAssociations, eks:DescribeAddonVersions
 ec2:DescribeSubnets, ec2:DescribeVpcs
 iam:ListAttachedRolePolicies, iam:ListRolePolicies,
 iam:GetPolicy, iam:GetPolicyVersion
+logs:DescribeLogGroups
 cloudwatch:DescribeAlarms
 ```
 

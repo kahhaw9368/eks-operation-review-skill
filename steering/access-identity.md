@@ -73,3 +73,25 @@ Assess IAM and RBAC configuration for security and operational excellence — po
 - ⬜ UNKNOWN: Cannot determine MFA/SSO requirements — suggest user investigate
 
 **Key talking point:** An API server open to 0.0.0.0/0 is exposed to the internet. You're relying entirely on authentication.
+
+---
+
+### 3.4 — Pod Security Admission (PSA)
+
+**What to check:**
+- Pod Security Standards enforcement via namespace labels (`pod-security.kubernetes.io/enforce`)
+- Which namespaces have PSA labels and at what level (privileged, baseline, restricted)
+- Production namespaces without PSA enforcement
+
+**How to check:**
+1. List namespaces → inspect labels for `pod-security.kubernetes.io/enforce`, `pod-security.kubernetes.io/warn`, `pod-security.kubernetes.io/audit`
+2. Count namespaces with enforcement vs without (exclude kube-system, kube-public, kube-node-lease)
+3. Check if any application namespaces use `privileged` enforce level
+
+**Rating:**
+- 🟢 GREEN: PSA labels on all application namespaces, `baseline` or `restricted` enforcement
+- 🟡 AMBER: PSA labels on some namespaces but not all, or only `warn`/`audit` mode (no enforcement)
+- 🔴 RED: No PSA labels on any namespace, or application namespaces set to `privileged`
+- ⬜ UNKNOWN: Cannot determine if third-party admission controller (OPA/Gatekeeper, Kyverno) handles pod security instead
+
+**Key talking point:** PodSecurityPolicy was removed in Kubernetes 1.25. Pod Security Admission is the built-in replacement. Without it (or a third-party equivalent), any pod spec is accepted — including privileged containers.

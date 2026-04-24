@@ -12,7 +12,7 @@ CI/CD pipeline details (approval gates, post-deployment tests) are not fully det
 
 **What to check:**
 - Deployment strategies in use (RollingUpdate vs Recreate)
-- maxUnavailable and maxSurge settings (defaults are risky for small replica counts)
+- maxUnavailable and maxSurge settings (defaults of 25% are risky for replicas <= 4 — e.g., 25% of 2 = 0, meaning no controlled rollout. Recommend maxUnavailable: 0, maxSurge: 1 for small deployments)
 - Argo Rollouts resources
 - Flagger Canary resources
 - terminationGracePeriodSeconds and preStop hooks
@@ -64,7 +64,7 @@ CI/CD pipeline details (approval gates, post-deployment tests) are not fully det
 1. List Deployments → count those with `lifecycle.preStop` vs without
 2. List Deployments → check `terminationGracePeriodSeconds` (null = default 30s)
 3. List Services → check for `service.beta.kubernetes.io/aws-load-balancer-type` annotation
-4. List Ingresses → check for `alb.ingress.kubernetes.io/target-group-attributes` annotation
+4. List Ingresses → check for `alb.ingress.kubernetes.io/target-group-attributes` annotation (deregistration delay should match or exceed `terminationGracePeriodSeconds`)
 
 **Rating:**
 - 🟢 GREEN: preStop hooks on all externally-facing deployments, grace period tuned, LB drain aligned

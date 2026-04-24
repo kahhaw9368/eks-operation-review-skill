@@ -1,5 +1,19 @@
+# macOS
 .DS_Store
-reports/**/*.html
-reports/**/.DS_Store
+
+# Generated reports (runtime output, not source)
 EKS-Operation-Review-*.md
 EKS-Operation-Review-*.html
+reports/**/*.html
+reports/**/.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Environment / credentials
+.env
+.env.local

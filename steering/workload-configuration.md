@@ -19,7 +19,7 @@ Assess workload resilience: resource requests/limits, health probes, disruption 
 2. Count pods with no requests vs total running pods → calculate percentage
 3. List LimitRange resources across all namespaces
 4. List ResourceQuota resources across all namespaces
-5. Get events with reason=OOMKilling
+5. Get events with reason=OOMKilling (count occurrences — >5 in recent events = AMBER, >20 = RED)
 6. List ValidatingWebhookConfigurations and MutatingWebhookConfigurations
 
 **Rating:**
@@ -37,7 +37,7 @@ Assess workload resilience: resource requests/limits, health probes, disruption 
 **What to check:**
 - Deployments missing readiness probes
 - Deployments missing liveness probes
-- Deployments missing startup probes (important for JVM apps)
+- Deployments missing startup probes (important for slow-starting apps: JVM/Java, Kotlin, Scala, or apps with long initialization >10s)
 - Pods in CrashLoopBackOff (may indicate bad liveness probes)
 
 **How to check:**
@@ -58,7 +58,7 @@ Assess workload resilience: resource requests/limits, health probes, disruption 
 **What to check:**
 - PDB resources and their settings
 - Multi-replica deployments without PDBs
-- PDBs with disruptionsAllowed=0 (blocks upgrades)
+- PDBs with disruptionsAllowed=0 (blocks upgrades). If disruptionsAllowed=0 AND replicas=1, mark RED (single point of failure that also blocks node drains)
 - Single-replica deployments (inherently not disruption-safe)
 
 **How to check:**

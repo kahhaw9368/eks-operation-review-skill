@@ -3,7 +3,9 @@
 ## Purpose
 Assess EKS cluster version currency, data plane alignment, upgrade readiness, add-on compatibility, and upgrade process maturity.
 
-## EKS Version Support Calendar (as of March 2026)
+## EKS Version Support Calendar
+
+> **Last verified:** 2026-04-24. This table can become stale. Before rating version currency, cross-check against the [official EKS version calendar](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html).
 
 Use this table to determine the ACTUAL support status. Do NOT guess or use training data.
 

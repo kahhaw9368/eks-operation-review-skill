@@ -45,13 +45,13 @@ Assess VPC CNI configuration, IP capacity, DNS health, and network segmentation.
 1. Read Deployment `coredns` in kube-system → replicas, resources, topologySpreadConstraints
 2. List pods with label `k8s-app=kube-dns` → check node placement
 3. Count nodes
-4. List DaemonSets → check for `node-local-dns` or `nodelocaldns`
-5. List HPAs in kube-system with label `k8s-app=kube-dns`
+4. List DaemonSets → check for `node-local-dns` or `nodelocaldns` (recommended for clusters with 50+ nodes)
+5. List HPAs in kube-system with label `k8s-app=kube-dns` (if HPA present, CoreDNS can auto-scale so fewer static replicas is acceptable)
 
 **Rating:**
-- 🟢 GREEN: CoreDNS scaled to cluster size, spread across AZs, NodeLocal DNSCache on large clusters
-- 🟡 AMBER: Adequate replicas but no topology spread, or no NodeLocal DNSCache on 50+ node clusters
-- 🔴 RED: CoreDNS under-provisioned (2 replicas for 50+ nodes), or past DNS incidents
+- 🟢 GREEN: CoreDNS scaled to cluster size (~1 replica per 8 nodes, min 2), spread across AZs, NodeLocal DNSCache on clusters with 50+ nodes
+- 🟡 AMBER: Adequate replicas but no topology spread, or no NodeLocal DNSCache on 50+ node clusters, or no HPA
+- 🔴 RED: CoreDNS under-provisioned (2 replicas for 50+ nodes with no HPA), or past DNS incidents
 - ⬜ UNKNOWN: Cannot determine if DNS issues have occurred historically
 
 ---

@@ -74,6 +74,7 @@ Use the pre-verified reference map below. Do NOT call the AWS Documentation MCP 
 - RBAC hardening: `https://docs.aws.amazon.com/eks/latest/userguide/rbac-hardening.html`
 - API server endpoint: `https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html`
 - Security best practices: `https://docs.aws.amazon.com/eks/latest/best-practices/security.html`
+- Pod Security Standards: `https://docs.aws.amazon.com/eks/latest/best-practices/pod-security.html`
 
 **Section 04 — Observability**
 - Control plane logging: `https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html`
