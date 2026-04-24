@@ -139,7 +139,7 @@ The [AWS-managed EKS MCP server](https://docs.aws.amazon.com/eks/latest/userguid
 }
 ```
 
-> **Important:** Keep the server key as `awslabs.eks-mcp-server` so the skill's tool references resolve correctly.
+> **Important:** The server name in `.mcp.json` (the `"awslabs.eks-mcp-server"` part) must stay exactly as shown. Claude Code uses this name to route tool calls — changing it will prevent the skill from finding the EKS MCP server.
 
 </details>
 
@@ -163,8 +163,8 @@ Used during assessment for ad-hoc AWS documentation lookups. Already configured 
 
 Claude Code merges MCP configuration from multiple levels (global `~/.claude/settings.json` and project `.mcp.json`). If you already have an EKS MCP server configured globally:
 
-- **Same key name** (`awslabs.eks-mcp-server`) — the project `.mcp.json` takes precedence. No action needed.
-- **Different key name** — you may end up with two EKS MCP servers running. Remove or disable the duplicate from either your global config or the project `.mcp.json` to avoid conflicts.
+- **Same server name** (`awslabs.eks-mcp-server` in both places) — the project `.mcp.json` takes precedence. No action needed.
+- **Different server name** (e.g., `eks-mcp` globally vs `awslabs.eks-mcp-server` in the project) — both servers will run simultaneously. Disable the one you don't need to avoid duplicate API calls.
 
 ### Customization
 
