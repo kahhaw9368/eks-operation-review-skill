@@ -42,6 +42,11 @@ cd eks-operation-review-skill
 claude
 ```
 
+On first launch, Claude Code will prompt you to enable two MCP servers from `.mcp.json`. **Enable both** — they are required for the skill to work:
+
+- `awslabs.eks-mcp-server` — connects to your EKS cluster
+- `awslabs.aws-documentation-mcp-server` — looks up AWS documentation during assessment
+
 Then run:
 
 ```
