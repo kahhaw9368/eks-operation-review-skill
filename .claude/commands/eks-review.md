@@ -7,6 +7,7 @@
 3. **Do NOT hardcode or guess cluster names.** Always discover clusters by listing them first.
 4. **Do NOT retry a failed MCP tool call more than once.** If it fails twice, stop and show troubleshooting steps.
 5. **Always load the relevant steering file before executing checks for that section.**
+6. **Do NOT use the `manage_eks_stacks` MCP tool for cluster discovery or description.** That tool manages CloudFormation stacks, not EKS clusters. Use `aws eks list-clusters` and `aws eks describe-cluster` via Bash for pre-flight, and `list_k8s_resources` for Kubernetes checks.
 
 ## Steering File Loading
 
@@ -93,29 +94,56 @@ The skill will automatically discover your clusters and walk you through the ass
 
 This step verifies everything works before starting the assessment. Follow this exact sequence:
 
-**Action 1 -- List clusters (tests MCP + discovers clusters)**
+**Action 1 -- List clusters (discovers clusters)**
 
-Call the EKS MCP server tool to list EKS clusters. This requires NO cluster name.
+Use the AWS CLI to list clusters. Do NOT use the `manage_eks_stacks` MCP tool — it manages CloudFormation stacks, not cluster discovery.
+
+```
+aws eks list-clusters --output json
+```
 
 - Success -> Show the cluster list. Ask the user which cluster to assess. If only one cluster, confirm: "I found one cluster: [name]. Shall I assess this one?"
 - Failure -> STOP. Do NOT retry more than once. Do NOT read config files. Show:
 
-> **The EKS MCP server isn't responding.** Try these steps:
-> 1. Check that Python 3.10+ and uv are installed: `uv --version`
-> 2. Check that AWS credentials work: `aws sts get-caller-identity`
+> **Cannot list EKS clusters.** Try these steps:
+> 1. Check that AWS credentials work: `aws sts get-caller-identity`
+> 2. Check the region: `aws configure get region`
 > 3. Verify AWS_PROFILE and AWS_REGION in `.mcp.json`
-> 4. Test in terminal: `uvx awslabs.eks-mcp-server@latest`
 
 Wait for the user to resolve the issue.
 
 **Action 2 -- Describe the selected cluster**
 
-Once the user picks a cluster, describe it. Show:
+Use the AWS CLI to describe the cluster. Do NOT use `manage_eks_stacks` — it looks for CloudFormation stacks, not EKS clusters.
+
+```
+aws eks describe-cluster --name <cluster-name> --output json
+```
+
+From the response, show:
 - Cluster name, Kubernetes version, platform version, region, status
 - AWS account ID
 - Authentication mode
 
-**Action 3 -- Confirm**
+**Action 3 -- Verify MCP connectivity**
+
+Call one MCP tool to confirm the EKS MCP server works (e.g., list Nodes):
+
+```
+list_k8s_resources(cluster_name="<cluster-name>", kind="Node", api_version="v1")
+```
+
+- Success -> MCP server is working. Proceed.
+- Failure -> STOP. Show:
+
+> **The EKS MCP server isn't responding.** Try these steps:
+> 1. Check that Python 3.10+ and uv are installed: `uv --version`
+> 2. Test the MCP server: `uvx awslabs.eks-mcp-server@latest`
+> 3. Verify AWS_PROFILE and AWS_REGION in `.mcp.json`
+
+Wait for the user to resolve the issue.
+
+**Action 4 -- Confirm**
 
 Ask: *"Ready to start the assessment on [cluster-name] (v[version])?"*
 

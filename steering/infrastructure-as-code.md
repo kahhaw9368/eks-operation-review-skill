@@ -15,7 +15,7 @@ This section is only partially automatable. The skill can detect tool presence (
 - CloudFormation stacks with "eks" or "EKS" in the name
 
 **How to check:**
-1. Describe cluster → inspect `tags` for IaC indicators
+1. Describe cluster → inspect `tags` for IaC indicators (tags were already retrieved in Step 0 pre-flight — reuse that data, do NOT call `manage_eks_stacks`)
 2. Look for tags: `terraform`, `managed-by`, `aws:cloudformation:stack-name`, `eksctl.cluster.k8s.io/*`, `aws:cdk:*`
 
 **Rating:**
